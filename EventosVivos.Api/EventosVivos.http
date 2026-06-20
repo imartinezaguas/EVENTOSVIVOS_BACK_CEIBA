@@ -1,0 +1,6 @@
+@EventosVivos_HostAddress = http://localhost:5064
+
+GET {{EventosVivos_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
