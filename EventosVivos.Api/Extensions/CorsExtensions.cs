@@ -12,7 +12,7 @@ public static class CorsExtensions
         {
             options.AddPolicy(AngularPolicy, builder =>
             {
-                builder.WithOrigins("http://localhost:4200", "http://localhost:42000")
+                builder.WithOrigins("http://localhost:4200", "http://localhost:42000", "https://eventosvivos.cephasco.com", "http://eventosvivos.cephasco.com")
                        .AllowAnyHeader()
                        .AllowAnyMethod();
             });

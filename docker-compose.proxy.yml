@@ -1,0 +1,29 @@
+services:
+  eventos-proxy:
+    image: nginx:alpine
+    container_name: eventos-api-proxy
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+    labels:
+      - "traefik.enable=true"
+      # Habilitar HTTP y HTTPS
+      - "traefik.http.routers.eventos-api.rule=Host(`eventos-api.cephasco.com`)"
+      - "traefik.http.routers.eventos-api.entrypoints=websecure"
+      - "traefik.http.routers.eventos-api.tls=true"
+      - "traefik.http.routers.eventos-api.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.eventos-api.loadbalancer.server.port=80"
+      # Decirle a Traefik qué red usar para conectarse a este contenedor
+      - "traefik.docker.network=root_default"
+      
+    networks:
+      - root_default
+
+networks:
+  root_default:
+    external: true
+    
+    # Asumimos que Traefik y los demás contenedores usan la red que conecta los proxies
+    # Para estar seguros, usaremos la red por defecto de la máquina o dejaremos que Traefik lo detecte
